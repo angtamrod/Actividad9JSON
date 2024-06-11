@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Restaurante</title>
+</head>
+<body>
+    <h3>Menu</h3>
+    <div class="contenedor">
+        <!--<div class="bebidas"></div>
+        <div class="platos"></div>
+        <div class="postres"></div>-->
+    </div>
+    <script>
+        const dataMenu= `{
+  "menu": [{
+      "nombre": "Bebidas",
+      "items": [
+            {
+            "nombre": "Coca-Cola",
+            "precio": 2.5
+            },
+            {
+            "nombre": "Jugo de Naranja",
+            "precio": 3.0
+            },
+            {
+            "nombre": "Agua Mineral",
+            "precio": 1.5
+            }
+        ]
+    },
+    {
+      "nombre": "Platos Principales",
+      "items": [
+            {
+            "nombre": "Hamburguesa",
+            "precio": 8.0
+            },
+            {
+            "nombre": "Pizza",
+            "precio": 10.0
+            },
+            {
+            "nombre": "Ensalada César",
+            "precio": 6.5
+            }
+        ]
+    },
+    {
+      "nombre": "Postres",
+      "items": [
+            {
+            "nombre": "Tiramisú",
+            "precio": 4.5
+            },
+            {
+            "nombre": "Cheesecake",
+            "precio": 5.0
+            },
+            {
+            "nombre": "Helado",
+            "precio": 3.0
+            }
+        ]
+    }]
+}`;
+
+    //Pasar de JSON a objeto en este caso a lista
+    const objMenu = JSON.parse(dataMenu);
+    const listaMenu = objMenu.menu;
+    /*const objMenuBebidas = objMenu.items[0];
+    const objMenuPlatos = objMenu.items[1];
+    const objMenuPostres = objMenu.items[2];*/
+    const divContenedor = document.querySelector(".contenedor");
+    /*const divBebidas = document.querySelector(".bebidas");
+    const divPlatos = document.querySelector(".platos");
+    const divPostres = document.querySelector(".Postres");*/
+
+    //Paso 3: Hay que hacer un bucle
+  //Ponemos usuario para dentificar cada item de la lista y lo hacemos con el for each
+  listaMenu.forEach(apartado => {
+    divContenedor.innerHTML += `<h3 class="contenedor__h3">${apartado.nombre}</h3>`
+    const itemsMenu = apartado.items;
+    itemsMenu.forEach(item =>{
+        divContenedor.innerHTML += `<div class="apartados">
+                                <h3>${item.nombre}</h3>
+                                <p>${item.precio}</p>
+                            </div>`; 
+    })
+    
+  });
+  
+  /**/
+  
+
+    </script>
+</body>
+</html>
