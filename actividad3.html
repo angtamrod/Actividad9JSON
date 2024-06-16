@@ -4,11 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .main{
+            display: flex;
+        }
+        img{
+            width: 300px;
+        }
+        .contenedor img{
+            max-width: 200px;
+        }
+        .contenedor {
+            flex-grow: 1;
+            background: #ccc;
+
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .pelicula{
+            min-width: 200px;
+            background-color: lightcoral;
+            padding:20px;
+        
+        }
+
+        .peliCard{
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        .pelicula img{
+            max-width: 150px;
+            
+        }
+        ul, p{
+            margin: 20px;
+        }
+
+    </style>
 </head>
 <body>
-    <div id="contenedor">
+    <main class="main">
+    <!--Lista de peliculas-->
+    <div class="contenedor" id="contenedor">
     </div>
-    <div id="pelicula"></div>
+    <!--Lista de peliculas-->
+    <div class="pelicula" id="pelicula"></div>
+</main>
    
     <script>
         const dataPeliculas = `[
@@ -17,23 +66,23 @@
     "genero": "Ciencia Ficción",
     "puntaje": 8.8,
     "descripcion": "Un ladrón que roba secretos corporativos a través del uso de tecnología de sueños es dado la tarea inversa de plantar una idea en la mente de un CEO.",
-    "imagen": "https://via.placeholder.com/150"
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyigA2K3BrnmeFq9wy-s-kRb9jE6q_JdfTzQ&s"
   },
   {
     "titulo": "The Dark Knight",
     "genero": "Acción",
     "puntaje": 9.0,
     "descripcion": "Cuando el Joker emerge como el nuevo villano del caos, Batman debe aceptar uno de los mayores desafíos psicológicos y físicos para combatir la injusticia.",
-    "imagen": "https://via.placeholder.com/150"
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgMtkGBfHb06Qfe-eI5WYVbzMZ18yHhdowsA&s"
   },
   {
     "titulo": "Interstellar",
     "genero": "Aventura",
     "puntaje": 8.6,
     "descripcion": "Un equipo de exploradores viaja a través de un agujero de gusano en el espacio en un intento de asegurar la supervivencia de la humanidad.",
-    "imagen": "https://via.placeholder.com/150"
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_1lyTltzcCn9HwElHvHjynD9F_RY8bBoOLg&s"
   }
-]`
+]`;
 
 //Paso 1: Pasamos nuestro JSON a objeto de js
 const listaPeliculas = JSON.parse(dataPeliculas);
@@ -42,32 +91,69 @@ const listaPeliculas = JSON.parse(dataPeliculas);
 const divContenedor = document.querySelector("#contenedor");
 const divPeliculas = document.querySelector("#pelicula");
 
-listaPeliculas.forEach(peliculas => {
+listaPeliculas.forEach((peliculas, indice) => {
+            /*tituloPeliculas.addEventListener("click", () => {
+                divPeliculas.innerHTML += ` <ul>
+                <li>${peliculas.genero}</li>
+                <li>${peliculas.puntaje}</li>
+                <li>${peliculas.descripcion}</li>
+            </ul>`
+            } )*/
+    //ahora trabajao con
+    console.log (peliculas.titulo);
+    console.log(indice);
+
+    //const tituloPeliculas = peliculas.titulo;
+
+    //versión 1 : crear un div utilizando template strings
+    // divContenedor.innerHTML += `<div class="peliCard" onclick="seleccionarPelicula(${indice})">
+    //     <h1 class="contenedor__h1">${peliculas.titulo}</h1>
+    //     <img src="${peliculas.imagen}" alt="${peliculas.titulo}">
+    //     </div>`; 
     
-    const tituloPeliculas =peliculas.titulo;
-    divContenedor.innerHTML += `<div class="peli"><h1 class="contenedor__h3">${tituloPeliculas}</h1><img src="${peliculas.imagen}" alt="${tituloPeliculas}"></div>`; 
     
-    
-    /*tituloPeliculas.addEventListener("click", () => {
-        divPeliculas.innerHTML += ` <ul>
-        <li>${peliculas.genero}</li>
-        <li>${peliculas.puntaje}</li>
-        <li>${peliculas.descripcion}</li>
-    </ul>`
-    } )*/
+    //Version 2: Crear un div utilizando createElement()
+    const peliculaDiv = document.createElement(`div`);
+    peliculaDiv.classList.add("peliCard");
+    //Aquí va lo que rellenará los div que hemos creado
+    peliculaDiv.innerHTML = `<h1 class="contenedor__h1">${peliculas.titulo}</h1>
+                            <img src="${peliculas.imagen}" alt="${peliculas.titulo}">
+                            `;
+    divContenedor.appendChild(peliculaDiv);
+        peliculaDiv.addEventListener("click", ()=>{
+            seleccionarPelicula(indice);
+        });
     
 });
 
-// Paso 3: Agregamos un EventListener click en cada películas 
-const pelis = document.querySelectorAll(".peli");
+function seleccionarPelicula(num){
+    //alert("Mostrar pelicula" + num);
+    console.log(listaPeliculas[num]);
+    const pelicula = listaPeliculas[num];
+    divPeliculas.innerHTML = `<h3>${pelicula.titulo}</h3>
+    <img src="${pelicula.imagen}" alt="${pelicula.titulo}"
+    <ul>
+        <li>${pelicula.genero}</li>
+        <li>${pelicula.puntaje}</li>
+        </ul>
+        <p>${pelicula.descripcion}</p>
+        `;
 
-pelis.forEach(peli => {
-    peli.addEventListener("click", (event) => {
-        const divPeliculas = event.target;
-        alert ("olaaa")
-        
-    });
-})
+}
+
+// Paso 3: Agregamos un EventListener click en cada películas 
+
+// const pelis = document.querySelectorAll(".peliCard");
+// pelis.forEach(peli => {
+//     //para 
+//     peli.addEventListener("click", (event) => {
+//         //Nos indica a qué elemento le hicimos click
+//         //const divPeliculas = event.target;
+//         //usamos el método .closest() para encontrar el ".peli" más cercano, incluso cuando hago click en un hijo del elemento .peli
+//         const divPeliculas = event.target.closest(".peliCard");
+//         console.log(divPeliculas);  
+//     });
+// })
     </script>
 </body>
 </html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador Peliculas</title>
+    <style>
+        .pelicula{
+            border: 1px solid black;
+            display: flex;
+        }
+        .pelicula img{
+            width: 200px;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Peliculas</h1>
+
+    <div>
+        <label for="inputTitulo">Filtrar por titulo:</label>
+        <input id="inputTitulo"  type="text" placeholder="Ingrese titulo de la pelicula">
+    </div>
+
+    <div class="botones">
+        <button class="btn" id="btnTodos">Todos</button>
+        <button class="btn" id="btnScifi">Ciencia Ficción</button>
+        <button class="btn" id="btnAccion">Acción</button>
+        <button class="btn" id="btntAventura">Aventura</button>
+    </div>
+
+    <div class="pelisContainer"></div>
+
+    <script>
+ 
+/*------------------------------------------------------------------------------
+                1. DECLARAMOS VARIABLES
+--------------------------------------------------------------------------------*/
+const pelisContainer = document.querySelector(".pelisContainer");
+const inputTitulo = document.querySelector("#inputTitulo");
+//Variables de los botones
+const btnTodos = document.querySelector("#btnTodos");
+const btnScifi = document.querySelector("#btnScifi");
+const btnAccion = document.querySelector("#btnAccion");
+const btntAventura = document.querySelector("#btnAventura");
+
+//JSON
+const JSONPeliculas = `[
+  {
+    "titulo": "Inception",
+    "genero": "Ciencia Ficción",
+    "puntaje": 8.8,
+    "descripcion": "Un ladrón que roba secretos corporativos a través del uso de tecnología de sueños es dado la tarea inversa de plantar una idea en la mente de un CEO.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyigA2K3BrnmeFq9wy-s-kRb9jE6q_JdfTzQ&s"
+  },
+  {
+    "titulo": "The Dark Knight",
+    "genero": "Acción",
+    "puntaje": 9.0,
+    "descripcion": "Cuando el Joker emerge como el nuevo villano del caos, Batman debe aceptar uno de los mayores desafíos psicológicos y físicos para combatir la injusticia.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgMtkGBfHb06Qfe-eI5WYVbzMZ18yHhdowsA&s"
+  },
+  {
+    "titulo": "Interstellar",
+    "genero": "Aventura",
+    "puntaje": 8.6,
+    "descripcion": "Un equipo de exploradores viaja a través de un agujero de gusano en el espacio en un intento de asegurar la supervivencia de la humanidad.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_1lyTltzcCn9HwElHvHjynD9F_RY8bBoOLg&s"
+  }
+]`;
+
+//CONVERTIR MI JSON A OBJETO DE JS
+const dataPeliculas = JSON.parse(JSONPeliculas);
+
+//Agregamos EventListeners
+
+btnTodos.addEventListener("click", () => {
+    inputTitulo.value="";
+    listarPeliculas(dataPeliculas);
+});
+
+btnScifi.addEventListener("click", () => filtrarPorGenero("Ciencia Ficción"));
+btnAccion.addEventListener("click", () => filtrarPorGenero("Acción"));
+btntAventura.addEventListener("click", () => filtrarPorGenero("Aventura"));
+
+inputTitulo.addEventListener("input", ()=> {
+    //Aquí estamos seleccionando el texto que se escriba dentro del input y a la vez que lo convierte a minúscula (Para eso sirve toLowerCase())
+    const texto = inputTitulo.value.toLowerCase();
+    console.log(texto);
+
+    //Esto busca las películas dentro de la lista según título
+    const pelisFiltradas = dataPeliculas.filter(peli => peli.titulo.toLowerCase().includes(texto));
+    console.log(pelisFiltradas);
+
+    listarPeliculas(pelisFiltradas);
+});
+
+//2 HACEMOS LAS FUNCIONES
+
+function listarPeliculas(lista){
+    //Esta nos listará las películas
+    //Mostrará en pantalla las pelis con template string
+    pelisContainer.innerHTML = "";
+    lista.forEach(peli => {
+        pelisContainer.innerHTML += `<div class="pelicula">
+        <img src="${peli.imagen}" alt="${peli.titulo}"/>
+        <div>
+            <h2>${peli.titulo}</h2>
+            <p><strong>Genero:</strong>${peli.genero}</p>
+            <p><strong>Puntaje:</strong>${peli.puntaje}</p>
+            <p>${peli.descripcion}</p>
+            
+        </div>
+            `
+        
+    
+    });
+}
+
+function filtrarPorGenero(genero){
+    //Esta función filtrará la película según
+    const pelisFiltradas = dataPeliculas.filter( peli => peli.genero === genero );
+    listarPeliculas(pelisFiltradas);
+}
+//3. EJECUTAR EL CÓDIGO
+
+listarPeliculas(dataPeliculas);
+
+
+
+
+
+/*listaPeliculas.forEach((peliculas, indice) => {
+        divContenedor.innerHTML += `<div class="pelicula">
+        <h1 class="contenedor__h1">${peliculas.titulo}</h1>
+        <img src="${peliculas.imagen}" alt="${peliculas.titulo}">
+</div>`; });*/
+    
+    
+
+    </script>
+</body>
+</html>
